@@ -32,7 +32,7 @@ All interface control is done with the right hand, while the left hand controls 
 Packages are created to import custom and case specific needs for the right hand, and up to 3 custom packages besides the main interface package can be installed at once, making them only a left hand gesture away from activation. You can only have one active package at a time.
 
 ## Clone Repo
-- Use git command: `git clone https://github.com/TheCyberLocal/gesture-computer-nui.git`
+- Use git command: `git clone https://github.com/TheCyberLocal/gesture-computer-nui`
 
 ## Contributing
 Contributions to the Gesture Computer NUI project are welcome. Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
