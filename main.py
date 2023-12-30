@@ -25,6 +25,13 @@ For example, "import myMod as Module1".
 Once your modules are programed and imported to this main framework you are ready to have some fun!
 """
 
+"""
+IMPORTANT:
+If you activate a tilted gesture, you must unactivate it while still tilting.
+For example, if you activate r0 while tilting, and then release r0 while no longer tilting it will not deactivate.
+You must release r0 while still tilting.
+"""
+
 # import the necessary packages
 import mediapipe as mp  # pip install mediapipe
 import cv2  # pip install opencv-python
