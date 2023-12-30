@@ -1,18 +1,35 @@
 """
-The fingers are activated when the tip is folded over the palm.
-Notice the condition for finger activation and deactivation are not mutually exclusive.
-This is a solution to the flicker activation caused when the finger is near condition boundary.
-Instead, it is deactivated when the finger's middle segment is angled away from the palm,
- implying the finger is well outside the bounds of the palm.
-Though the thumb is a bit different, activating when the knuckle is over the palm,
- and deactivating when the tip has left the palm.
+All custom modules are for the right hand since the left is meant to control which package the right uses.
+Notice that each finger on your hand corresponds to an r-code or an l-code,
+ r standing for right hand and l for left hand.
+From thumb to pinky, the code is 0, 1, 2, 3, 4 respectively.
+
+To provide a gesture, you must face your open palm towards the screen.
+This will activate your hand, and the code will then search your hand for a gesture.
+A gesture is recognized if a finger on your open palm bends between your palm and the monitor.
+
+Notice the trigger activation and deactivation are not mutually exclusive to prevent activation flickering.
+Left hand is not the interface, but chooses the right hand's modes and when to close the program.
+Right hand is the interface, with 5 finger functions, one for each finger,
+ and two additional sub-triggers, left and right tilt, totaling at 15 distinct functions for the right hand per mode.
+Additionally, each function has two triggers, activation and deactivation, which both call their own functions,
+allowing you to have different functionalities for activation and deactivation.
+
+Basic Instructions:
+Exit program by triggering both l0 and l3, (left thumb and ring finger).
+Each l-code corresponds to a module number. For example, l2 sets right hand commands to use module 2.
+As you can see below at import custom mods,
+ you can change the names of the modules imported to your custom ones.
+For example, "import myMod as Module1".
+
+Once your modules are programed and imported to this main framework you are ready to have some fun!
 """
 
 # import the necessary packages
-import mediapipe as mp
-import cv2
+import mediapipe as mp  # pip install mediapipe
+import cv2  # pip install opencv-python
 
-# import custom mod packages
+# import custom mods
 import basicInterfaceV1_mod as Module0
 import customMod1 as Module1
 import customMod2 as Module2
@@ -239,15 +256,11 @@ class GestureControlInterface:
 
         # If right hand tilted right
         if results.right_hand_landmarks.landmark[5].x < results.right_hand_landmarks.landmark[0].x:
-
-            """
-            Specifically set thumb's knuckle to compare with wrist position when activating
-             because of difficultly meeting the condition when hand is tilted right
-            """
-            # If thumb's knuckle is over palm and previously was not activated
-            if (results.right_hand_landmarks.landmark[3].x < results.right_hand_landmarks.landmark[0].x
+            # If thumb's tip crosses index finger's base knuckle horizontally and previously was not activated
+            if (results.right_hand_landmarks.landmark[4].x < results.right_hand_landmarks.landmark[5].x
                     and not self.previous_gestures['r0_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r0_activated_tilted_right()
                 if self.mode == 1:
@@ -262,10 +275,11 @@ class GestureControlInterface:
                 # Update the previous state to activated
                 self.previous_gestures['r0_tilted_right'] = True
 
-            # If thumb's tip is not over palm and previously was activated
-            elif (results.right_hand_landmarks.landmark[4].x > results.right_hand_landmarks.landmark[5].x
+            # If thumb's middle segment is angled away from palm and was previously activated
+            elif (results.right_hand_landmarks.landmark[3].x > results.right_hand_landmarks.landmark[2].x
                   and self.previous_gestures['r0_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r0_deactivated_tilted_right()
                 if self.mode == 1:
@@ -284,6 +298,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[8].y > results.right_hand_landmarks.landmark[5].y
                     and not self.previous_gestures['r1_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r1_activated_tilted_right()
                 if self.mode == 1:
@@ -302,6 +317,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[7].y < results.right_hand_landmarks.landmark[6].y
                   and self.previous_gestures['r1_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r1_deactivated_tilted_right()
                 if self.mode == 1:
@@ -320,6 +336,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[12].y > results.right_hand_landmarks.landmark[9].y
                     and not self.previous_gestures['r2_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r2_activated_tilted_right()
                 if self.mode == 1:
@@ -338,6 +355,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[11].y < results.right_hand_landmarks.landmark[10].y
                   and self.previous_gestures['r2_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r2_deactivated_tilted_right()
                 if self.mode == 1:
@@ -356,6 +374,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[16].y > results.right_hand_landmarks.landmark[13].y
                     and not self.previous_gestures['r3_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r3_activated_tilted_right()
                 if self.mode == 1:
@@ -374,6 +393,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[15].y < results.right_hand_landmarks.landmark[14].y
                   and self.previous_gestures['r3_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r3_deactivated_tilted_right()
                 if self.mode == 1:
@@ -392,6 +412,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[20].y > results.right_hand_landmarks.landmark[17].y
                     and not self.previous_gestures['r4_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r4_activated_tilted_right()
                 if self.mode == 1:
@@ -410,6 +431,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[19].y < results.right_hand_landmarks.landmark[18].y
                   and self.previous_gestures['r4_tilted_right']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r4_deactivated_tilted_right()
                 if self.mode == 1:
@@ -426,11 +448,11 @@ class GestureControlInterface:
 
         # If right hand tilted left
         elif results.right_hand_landmarks.landmark[17].x > results.right_hand_landmarks.landmark[0].x:
-
-            # If thumb's knuckle is folded over palm and previously was not activated
-            if (results.right_hand_landmarks.landmark[3].x < results.right_hand_landmarks.landmark[5].x
+            # If thumb's tip horizontally crosses the ring finger base knuckle and previously was not activated
+            if (results.right_hand_landmarks.landmark[4].x < results.right_hand_landmarks.landmark[9].x
                     and not self.previous_gestures['r0_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r0_activated_tilted_left()
                 if self.mode == 1:
@@ -449,6 +471,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[4].x > results.right_hand_landmarks.landmark[5].x
                   and self.previous_gestures['r0_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r0_deactivated_tilted_left()
                 if self.mode == 1:
@@ -467,6 +490,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[8].y > results.right_hand_landmarks.landmark[5].y
                     and not self.previous_gestures['r1_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r1_activated_tilted_left()
                 if self.mode == 1:
@@ -485,6 +509,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[7].y < results.right_hand_landmarks.landmark[5].y
                   and self.previous_gestures['r1_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r1_deactivated_tilted_left()
                 if self.mode == 1:
@@ -503,6 +528,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[12].y > results.right_hand_landmarks.landmark[9].y
                     and not self.previous_gestures['r2_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r2_activated_tilted_left()
                 if self.mode == 1:
@@ -521,6 +547,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[11].y < results.right_hand_landmarks.landmark[10].y
                   and self.previous_gestures['r2_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r2_deactivated_tilted_left()
                 if self.mode == 1:
@@ -539,6 +566,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[16].y > results.right_hand_landmarks.landmark[13].y
                     and not self.previous_gestures['r3_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r3_activated_tilted_left()
                 if self.mode == 1:
@@ -557,6 +585,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[15].y < results.right_hand_landmarks.landmark[14].y
                   and self.previous_gestures['r3_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r3_deactivated_tilted_left()
                 if self.mode == 1:
@@ -575,6 +604,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[20].y > results.right_hand_landmarks.landmark[17].y
                     and not self.previous_gestures['r4_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r4_activated_tilted_left()
                 if self.mode == 1:
@@ -593,6 +623,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[19].y < results.right_hand_landmarks.landmark[18].y
                   and self.previous_gestures['r4_tilted_left']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r4_deactivated_tilted_left()
                 if self.mode == 1:
@@ -613,6 +644,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[3].x < results.right_hand_landmarks.landmark[5].x
                     and not self.previous_gestures['r0_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r0_activated_without_tilt()
                 if self.mode == 1:
@@ -631,6 +663,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[4].x > results.right_hand_landmarks.landmark[5].x
                   and self.previous_gestures['r0_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r0_deactivated_without_tilt()
                 if self.mode == 1:
@@ -649,6 +682,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[8].y > results.right_hand_landmarks.landmark[5].y
                     and not self.previous_gestures['r1_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r1_activated_without_tilt()
                 if self.mode == 1:
@@ -667,6 +701,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[7].y < results.right_hand_landmarks.landmark[6].y
                   and self.previous_gestures['r1_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r1_deactivated_without_tilt()
                 if self.mode == 1:
@@ -685,6 +720,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[12].y > results.right_hand_landmarks.landmark[9].y
                     and not self.previous_gestures['r2_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r2_activated_without_tilt()
                 if self.mode == 1:
@@ -703,6 +739,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[11].y < results.right_hand_landmarks.landmark[10].y
                   and self.previous_gestures['r2_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r2_deactivated_without_tilt()
                 if self.mode == 1:
@@ -721,6 +758,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[16].y > results.right_hand_landmarks.landmark[13].y
                     and not self.previous_gestures['r3_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r3_activated_without_tilt()
                 if self.mode == 1:
@@ -739,6 +777,7 @@ class GestureControlInterface:
             elif (results.right_hand_landmarks.landmark[16].y < results.right_hand_landmarks.landmark[13].y
                   and self.previous_gestures['r3_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r3_deactivated_without_tilt()
                 if self.mode == 1:
@@ -757,6 +796,7 @@ class GestureControlInterface:
             if (results.right_hand_landmarks.landmark[20].y > results.right_hand_landmarks.landmark[17].y
                     and not self.previous_gestures['r4_without_tilt']):
 
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r4_activated_without_tilt()
                 if self.mode == 1:
@@ -774,7 +814,8 @@ class GestureControlInterface:
             # If pinky finger's middle segment is angled away from palm and previously was activated
             elif (results.right_hand_landmarks.landmark[20].y < results.right_hand_landmarks.landmark[17].y
                   and self.previous_gestures['r4_without_tilt']):
-
+                
+                # Chooses which module to run given the mode
                 if self.mode == 0:
                     Module0.r4_deactivated_without_tilt()
                 if self.mode == 1:

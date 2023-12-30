@@ -1,42 +1,61 @@
-# Gesture Computer NUI Project
+# Gesture Computer NUI Project README
 
 ## Overview
-The Gesture Computer NUI project aims to revolutionize how users interact with their computers by introducing an intuitive, gesture-based control system. This system allows users to perform common computing tasks through hand gestures, reducing dependency on traditional input devices like keyboards and mice.
+Gesture Computer NUI is an innovative interface that allows users to control their computer using hand gestures. This project utilizes the `cv2` and `mediapipe` libraries to interpret hand gestures, with the left hand selecting operational modes and the right hand executing specific functions.
 
+### R-Code and L-Code System
+- Each finger corresponds to a specific code: 0 (thumb), 1 (index finger), 2 (middle finger), 3 (ring finger), 4 (pinky).
+- The right hand (`R-Code`) is used for performing actions, while the left hand (`L-Code`) selects modes and controls program flow.
 
-## Developmental Stage - Controls to have
-- Mouse movement
-- Left click
-- Right click
-- Grab / hold left click
-- Press enter
-- Activate voice typing
-- Create new desktop
-- Delete desktop
-- Shift to left desktop
-- Shift to right desktop
+## Installation
 
-## Developmental Stage - Feature details
-- To activate the gesture control, face your palm towards the screen and open your hand.
-- Move your hand to control the cursor. Press R0 to lock/unlock cursor control.
-- For clicks and Enter key, use R1, R2, and R3 gestures respectively.
-- To activate voice typing, press R4.
-- Desktop management is controlled via tilting the activated hand.
-  - **Create New Desktop**: Activate hand, R0 right, and right hand tilt right.
-  - **Delete Desktop**: Activate hand, R0 right, and right hand tilt left.
-  - **Shift Desktop**: Activate hand and tilt hand right/left without R0.
-- Custom scripts and modes are controlled via the left hand (L0 to L4).
+### Prerequisites
+- Python 3.x
+- `cv2` and `mediapipe` libraries
 
-## Developmental Stage - Outline
-All interface control is done with the right hand, while the left hand controls the mode of the right hand, including which package is activated.
-Packages are created to import custom and case specific needs for the right hand, and up to 3 custom packages besides the main interface package can be installed at once, making them only a left hand gesture away from activation. You can only have one active package at a time.
+### Clone the Repository
+```bash
+git clone https://github.com/yourusername/gesture-computer-nui.git
+cd gesture-computer-nui
+```
 
-## Clone Repo
-- Use git command: `git clone https://github.com/TheCyberLocal/gesture-computer-nui`
+### Install Required Libraries
+```bash
+pip install opencv-python
+pip install mediapipe
+```
+
+## Usage Instructions
+
+### Activation
+- To activate gesture recognition, face your open palm towards the screen.
+
+### Exiting the Program
+- Trigger both `l0` and `l3` (left thumb and ring finger) to exit the program.
+
+### Selecting Modules
+- Use the `l-codes` (left hand gestures) to switch between different modules for the right hand. For example, `l2` activates module 2.
+
+### Right Hand Functions
+- The right hand provides 5 primary finger functions (`r0` to `r4`), with additional sub-triggers for left and right tilt. 
+- Each function has separate triggers for activation and deactivation, totalling at 15 activation and 15 deactivation functions for the right hand.
+
+## Writing Custom Modules
+
+### Creating a Module
+1. Make a copy of customModTemplate.py with your desired name for your module (e.g., `myModule.py`).
+2. Implement your desired functionality within the present functions. (The function names are self-explanatory)
+
+### Connecting External Modules
+1. Import your custom module to the main script as any module from 0 to 4.
+   ```python
+   import myModule as Module1
+   ```
 
 ## Contributing
-Contributions to the Gesture Computer NUI project are welcome. Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
+Contributions to enhance Gesture Computer NUI are welcome. Feel free to fork the repository, make changes, and submit pull requests.
+
 
 ---
 
-This README provides a comprehensive guide for users and contributors, outlining the project's purpose, setup, usage, customization options, and contributing guidelines.
+This README provides a comprehensive guide for setting up, using, and extending the Gesture Computer NUI project. It outlines the system's fundamental concepts, installation instructions, usage guidelines, and steps for creating and integrating custom modules.
